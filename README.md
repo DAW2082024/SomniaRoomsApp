@@ -1,3 +1,3 @@
 # SomniaRoomsApp
 
-Somnia Rooms - User App
+User app for SomniaRooms.
