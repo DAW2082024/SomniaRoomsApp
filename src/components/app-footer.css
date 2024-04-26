@@ -1,0 +1,19 @@
+.footerComponent {
+    position: relative;
+    width: 100vw;
+    margin-inline: auto;
+
+    display: grid;
+    grid-template-columns: 60% 40%;
+
+    
+    align-items: center;
+
+    background-color: rgb(0, 71, 71);
+    border-radius: 10pt;
+
+    padding-block: 10px;
+
+    left: 0;
+    bottom: 0;
+}

@@ -1,0 +1,19 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+
+.appPage {
+  width: 80%;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+
+  background-color: rgb(45, 45, 45);
+}
