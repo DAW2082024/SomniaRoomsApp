@@ -4,7 +4,9 @@ function Homepage() {
 
   return (
     <div className="homePage">
-        <h1>HomePage</h1>
+      <h1 className="text-5xl font-bold underline">
+        HomePage
+      </h1>
     </div>
   )
 }
