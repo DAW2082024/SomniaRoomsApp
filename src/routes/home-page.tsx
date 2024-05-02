@@ -1,12 +1,11 @@
 import "./home-page.css"
+import { Button } from "@/components/ui/button"
 
 function Homepage() {
 
   return (
-    <div className="homePage">
-      <h1 className="text-5xl font-bold underline">
-        HomePage
-      </h1>
+    <div className="bg-background text-foreground">
+      <Button>Test</Button>
     </div>
   )
 }
