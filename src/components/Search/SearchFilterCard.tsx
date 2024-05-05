@@ -2,7 +2,7 @@ import { Separator } from "../ui/separator"
 import { Card, CardContent, CardHeader } from "../ui/card"
 import { Typography } from "../ui/typography"
 import 'react-day-picker/dist/style.css';
-import { DatePickerWithRange } from "../ui/DateRangePicker";
+import { DatePickerWithRange } from "../ui/dateRange-picker";
 import { Button } from "../ui/button";
 import { SearchIcon } from "lucide-react";
 
