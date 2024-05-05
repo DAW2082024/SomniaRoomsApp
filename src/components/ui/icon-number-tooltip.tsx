@@ -3,8 +3,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tool
 import { PropsWithChildren } from "react";
 
 interface IconWithTooltipNumberProps {
-  amount: number | null |undefined,
-  altText: string | null | undefined
+  amount?: number | null |undefined,
+  altText?: string | null | undefined
 }
 
 export function IconWithTooltipNumber({ amount = undefined, altText = undefined, children }: PropsWithChildren<IconWithTooltipNumberProps>) {

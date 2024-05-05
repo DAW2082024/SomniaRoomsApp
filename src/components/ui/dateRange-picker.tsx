@@ -3,7 +3,7 @@
 import * as React from "react"
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
-import { ActiveModifiers, DateRange } from "react-day-picker"
+import { ActiveModifiers, DateBefore, DateRange, Matcher } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -15,26 +15,50 @@ import {
 } from "@/components/ui/popover"
 import { Typography } from "./typography"
 
+export type UpdateRangeFunction = (newRange: DateRange) => void;
+
 export function DatePickerWithRange({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+  className, updateDateRange
+}: { className?: React.HTMLAttributes<HTMLDivElement> | undefined, updateDateRange: UpdateRangeFunction | undefined }) {
+  // Date Range State.
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
     from: undefined,
     to: undefined,
-  })
+  });
 
   //TODOME: Si el día es mods.outside, navegar al mes correspondiente.
+  // Handle Day change events.
   const handleDayClickFrom = (day: Date, mods: ActiveModifiers) => {
-    setDateRange({
+    const newDateRange: DateRange = {
       from: mods.selected ? undefined : day,
       to: dateRange?.to
-    })
+    }
+
+    setDateRange(newDateRange)
+    if (updateDateRange !== undefined) {
+      updateDateRange(newDateRange)
+    }
   }
+
   const handleDayClickTo = (day: Date, mods: ActiveModifiers) => {
-    setDateRange({
+    const newDateRange: DateRange = {
       from: dateRange?.from,
       to: mods.selected ? undefined : day
-    })
+    }
+
+    setDateRange(newDateRange)
+
+    if (updateDateRange !== undefined) {
+      updateDateRange(newDateRange)
+    }
+  }
+
+  // Disable days from "To" before "From"
+  let beforeAndSelected: Matcher[] = [];
+  if (dateRange?.from) {
+    const beforeMatcher: DateBefore = { before: dateRange?.from };
+    const dateMatcher: Matcher = dateRange?.from;
+    beforeAndSelected = [beforeMatcher, dateMatcher];
   }
 
   return (
@@ -96,6 +120,7 @@ export function DatePickerWithRange({
             selected={dateRange?.to}
             onDayClick={handleDayClickTo}
             numberOfMonths={1}
+            disabled={beforeAndSelected}
           />
         </PopoverContent>
       </Popover>

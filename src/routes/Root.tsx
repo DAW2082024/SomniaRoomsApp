@@ -3,6 +3,7 @@ import './Root.css'
 import AppHeader from '../components/app-header'
 import AppFooter from '../components/app-footer'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/toaster'
 
 function Root() {
 
@@ -10,9 +11,10 @@ function Root() {
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <AppHeader />
-        <div className='appPage'>
+        <div className='appPage bg-background text-foreground'>
           <Outlet />
         </div>
+        <Toaster />
         <AppFooter />
       </ThemeProvider>
     </>
