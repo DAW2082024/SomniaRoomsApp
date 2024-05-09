@@ -6,10 +6,17 @@ import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Typography } from "@/components/ui/typography"
 import { RoomCategory } from "@/model/RoomCategory"
+import { SearchFilter } from "@/model/SearchFilter"
+import { useNavigate } from "react-router-dom"
 
 function Homepage() {
 
   const { roomCategoryList, isLoading, isError } = useAPIRoomCategories();
+  const navigate = useNavigate();
+
+  const onBtSearchClick = (filter: SearchFilter) => {
+    navigate("/search", {state: filter})
+  }
 
   const roomList = roomCategoryList?.map((element: RoomCategory) => {
     return (
@@ -21,7 +28,7 @@ function Homepage() {
     <>
       <Typography variant={"h1"}>Hostal del Val</Typography>
       <Separator className="my-10" />
-      <SearchFilterCard />
+      <SearchFilterCard onSearchClick={onBtSearchClick}/>
       <Separator className="my-10" />
       <div className="grid grid-cols-2 gap-4">
         {roomList}

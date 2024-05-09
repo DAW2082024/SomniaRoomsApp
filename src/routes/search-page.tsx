@@ -10,6 +10,7 @@ import { AvailabilityFilter } from "@/model/RoomSearch"
 import { SearchFilter } from "@/model/SearchFilter"
 import { useAppStore } from "@/store"
 import { useMemo, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 //TODOME: Igual podemos crear un StateMachine conjunta para los siguiente estados de la página: Sin Buscar, Sin disponibilidad, error, cargando.
 function SearchPage() {
@@ -17,6 +18,7 @@ function SearchPage() {
   //const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>();
   const searchFilter = useAppStore((state) => (state.searchFilter));
   const resetBooking = useAppStore((state) => (state.resetBookingState));
+  const navigate = useNavigate();
 
   const [isSearched, setIsSearched] = useState<boolean>(false);
 
@@ -29,6 +31,10 @@ function SearchPage() {
 
       resetBooking(newFilter.dateRange.from, newFilter.dateRange.to);
     }
+  }
+
+  const onBookingContinue = () => {
+    navigate("/book");
   }
 
   //This seems a little bit overkill, but IDK.
@@ -79,7 +85,7 @@ function SearchPage() {
         {hasRooms ? roomList : (isSearched && noRoomsAvailable)}
       </div>
       <Separator className="my-10" />
-      <BookingDetails></BookingDetails>
+      <BookingDetails onBookingConfirm={onBookingContinue}></BookingDetails>
       <Separator className="my-10" />
       <BackendConnectionStatus isLoading={isLoading} isError={isError} />
     </div>

@@ -5,25 +5,33 @@ import 'react-day-picker/dist/style.css';
 import { DatePickerWithRange } from "../ui/dateRange-picker";
 import { Button } from "../ui/button";
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchFilter } from "@/model/SearchFilter";
 import { DateRange } from "react-day-picker";
 import { useToast } from "../ui/use-toast";
 import { useAppStore } from "@/store";
+import { useLocation } from "react-router-dom";
 
 type funOnSearchClick = (newFilter: SearchFilter) => void;
 
 export function SearchFilterCard({ onSearchClick }: { onSearchClick?: funOnSearchClick }) {
 
-  const { toast } = useToast();
+  //App filter. Updated on btSearchClick.
+  const appSearchFilter = useAppStore((state) => (state.searchFilter));
+  const setAppSearchFilter = useAppStore((state) => (state.setSearchFilter));
 
   //Local Filter state.
-  const [searchFilter, setSearchFilter] = useState<SearchFilter>({
-    dateRange: { from: new Date() }
-  })
+  const [searchFilter, setSearchFilter] = useState<SearchFilter>(appSearchFilter)
 
-  //App filter. Updated on btSearchClick.
-  const setAppSearchFilter = useAppStore((state) => (state.setSearchFilter));
+  //On location change, try to load searchFilter from state.
+  //FIXME: Si llegamos sin state, hay que borrar el state global...
+  const location = useLocation();
+  useEffect(() => {
+    setSearchFilter(location.state);
+  }, [location]);
+  
+  
+  const { toast } = useToast();
 
   // Validate and call callback on btSearch click.
   //TODOME: Add data validations and show messages.

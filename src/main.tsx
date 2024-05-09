@@ -6,6 +6,7 @@ import Root from './routes/Root';
 import ErrorPage from './error-page';
 import Homepage from './routes/home-page';
 import SearchPage from './routes/search-page';
+import BookPage from './routes/book-page';
 
 const router = createBrowserRouter([
   {
@@ -14,16 +15,26 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        path: "/",
+        element: <Homepage />
+      },
+      {
         path: "/home",
         element: <Homepage />
       },
       {
         path: "/search",
         element: <SearchPage />
+      },
+      {
+        path: "/book",
+        element: <BookPage />
       }
     ]
   },
 ]);
+
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

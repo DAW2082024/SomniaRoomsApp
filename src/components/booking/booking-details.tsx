@@ -6,9 +6,17 @@ import { Separator } from "../ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Button } from "../ui/button";
 
-export function BookingDetails() {
+type OnBookingClickFunction = () => void;
+
+export function BookingDetails({ onBookingConfirm }: { onBookingConfirm?: OnBookingClickFunction }) {
 
   const bookingData = useAppStore((state) => state.newBookingData);
+
+  const onBtBookingClick = () => {
+    if (onBookingConfirm) {
+      onBookingConfirm();
+    }
+  }
 
   if (!bookingData || bookingData.rooms.length <= 0) {
     return (
@@ -72,7 +80,9 @@ export function BookingDetails() {
         <Separator className="my-2"></Separator>
         <Typography variant={"h3"}>Total Price</Typography>
         <Typography variant={"h3"}>{totalPrice / 100} €</Typography>
-        <Button className="my-2"><Typography variant={"largeText"} className="text-primary-foreground">Book it!</Typography></Button>
+        <Button className="my-2" onClick={onBtBookingClick}>
+          <Typography variant={"largeText"} className="text-primary-foreground">Book it!</Typography>
+        </Button>
       </CardContent>
     </Card>
   )
