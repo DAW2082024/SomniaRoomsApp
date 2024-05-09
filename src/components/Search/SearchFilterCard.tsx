@@ -9,6 +9,7 @@ import { useState } from "react";
 import { SearchFilter } from "@/model/SearchFilter";
 import { DateRange } from "react-day-picker";
 import { useToast } from "../ui/use-toast";
+import { useAppStore } from "@/store";
 
 type funOnSearchClick = (newFilter: SearchFilter) => void;
 
@@ -16,9 +17,13 @@ export function SearchFilterCard({ onSearchClick }: { onSearchClick?: funOnSearc
 
   const { toast } = useToast();
 
+  //Local Filter state.
   const [searchFilter, setSearchFilter] = useState<SearchFilter>({
     dateRange: { from: new Date() }
   })
+
+  //App filter. Updated on btSearchClick.
+  const setAppSearchFilter = useAppStore((state) => (state.setSearchFilter));
 
   // Validate and call callback on btSearch click.
   //TODOME: Add data validations and show messages.
@@ -41,6 +46,7 @@ export function SearchFilterCard({ onSearchClick }: { onSearchClick?: funOnSearc
     }
 
     if (onSearchClick) {
+      setAppSearchFilter(searchFilter);
       onSearchClick(searchFilter);
     }
   }

@@ -7,21 +7,36 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Typography } from "@/components/ui/typography"
 import { AvailabilityFilter } from "@/model/RoomSearch"
 import { SearchFilter } from "@/model/SearchFilter"
-import { useState } from "react"
+import { useAppStore } from "@/store"
+import { useMemo, useState } from "react"
 
 //TODOME: Igual podemos crear un StateMachine conjunta para los siguiente estados de la página: Sin Buscar, Sin disponibilidad, error, cargando.
 function SearchPage() {
 
-  const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>();
+  //const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>();
+  const searchFilter = useAppStore((state) => (state.searchFilter));
   const [isSearched, setIsSearched] = useState<boolean>(false);
 
   const onBtSearchClick = (newFilter: SearchFilter) => {
-    setAvailabilityFilter({
-      startDate: newFilter.dateRange.from?.toDateString() ?? "",
-      endDate: newFilter.dateRange.to?.toDateString() ?? ""
-    });
+    console.log("onBtSearchClick: ");
+    console.log(newFilter);
     setIsSearched(true);
   }
+
+  //This seems a little bit overkill, but IDK.
+  const availabilityFilter: AvailabilityFilter | null = useMemo(
+    () => {
+      if (searchFilter && searchFilter.dateRange && searchFilter.dateRange.from && searchFilter.dateRange.to) {
+        const newAvailabilityFilter: AvailabilityFilter = {
+          startDate: searchFilter.dateRange.from.toDateString(),
+          endDate: searchFilter.dateRange.to.toDateString()
+        };
+        return newAvailabilityFilter;
+      }
+      return null;
+    },
+    [searchFilter]
+  );
 
   const { roomAvailabilityList, isLoading: isLoadingAvailability, isError: isErrorAvailability } = useAPIRoomAvailability(availabilityFilter ?? null);
 

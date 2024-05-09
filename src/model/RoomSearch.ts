@@ -5,6 +5,11 @@ export type RoomAvailabity = {
     availability: number
 }
 
+export type RoomPrice = {
+    guestNumber: number,
+    price: number
+}
+
 export type AvailabilityRequest = {
     filter: AvailabilityFilter
 }

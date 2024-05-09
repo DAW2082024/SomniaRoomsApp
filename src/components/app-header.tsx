@@ -10,9 +10,12 @@ function AppHeader() {
     <Card className="flex items-center mx-10 my-4">
       <CardContent className="w-full">
         <div className="flex justify-around">
-          <Typography variant={"largeText"}>Hostal del Val</Typography>
+          <div className="flex flex-row items-center gap-2">
+            <img src="public/SR2.svg" className="w-[64px]"></img>
+            <Typography variant={"largeText"}>Somnia Rooms</Typography>
+          </div>
           <Button variant="ghost">
-            <BookmarkIcon/>
+            <BookmarkIcon />
             <Typography variant={"largeText"}>Reservar</Typography>
           </Button>
           <ModeToggle />
