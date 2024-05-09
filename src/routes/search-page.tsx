@@ -2,6 +2,7 @@ import { useAPIRoomAvailability } from "@/api/api-roomSearch"
 import RoomBooking from "@/components/Rooms/room-booking"
 import { SearchFilterCard } from "@/components/Search/SearchFilterCard"
 import BackendConnectionStatus from "@/components/backend-conection-status"
+import { BookingDetails } from "@/components/booking/booking-details"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Typography } from "@/components/ui/typography"
@@ -15,12 +16,19 @@ function SearchPage() {
 
   //const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>();
   const searchFilter = useAppStore((state) => (state.searchFilter));
+  const resetBooking = useAppStore((state) => (state.resetBookingState));
+
   const [isSearched, setIsSearched] = useState<boolean>(false);
 
   const onBtSearchClick = (newFilter: SearchFilter) => {
     console.log("onBtSearchClick: ");
     console.log(newFilter);
-    setIsSearched(true);
+
+    if (newFilter.dateRange && newFilter.dateRange.from && newFilter.dateRange.to) {
+      setIsSearched(true);
+
+      resetBooking(newFilter.dateRange.from, newFilter.dateRange.to);
+    }
   }
 
   //This seems a little bit overkill, but IDK.
@@ -71,7 +79,7 @@ function SearchPage() {
         {hasRooms ? roomList : (isSearched && noRoomsAvailable)}
       </div>
       <Separator className="my-10" />
-      <RoomBooking key={99} availableAmount={5} roomCategoryId={6} />
+      <BookingDetails></BookingDetails>
       <Separator className="my-10" />
       <BackendConnectionStatus isLoading={isLoading} isError={isError} />
     </div>

@@ -10,18 +10,37 @@ import { DateRange } from "react-day-picker";
 import { FareFilter } from "@/model/RoomSearch";
 import { useAPIRoomPrices } from "@/api/api-roomSearch";
 import { NumberSelector } from "../ui/number-selector";
+import { NewBookingRoom } from "@/model/Bookings";
 
 function RoomBooking({ roomCategoryId, availableAmount }: { roomCategoryId: number, availableAmount: number }) {
 
-  const [selectedAmount, setSelectedAmount] = useState<number>(0);
+  const [selectedAmount, setSelectedAmount] = useState<Map<number, number>>(new Map());
 
   const currentDates: DateRange = useAppStore((state) => (state.searchFilter.dateRange));
+  const addNewRoom = useAppStore((state) => (state.addNewBookingRoom));
 
-  function onSelectedAmountUpdate(guestNumber: number, newCount: number) {
+  function onSelectedAmountUpdate(guestNumber: number, newCount: number, price: number) {
     console.log("Room " + roomCategoryId + " Guestnumber: " + guestNumber + " Count: " + newCount);
-    setSelectedAmount(newCount);
+
+    const newAmountMap = new Map(selectedAmount);
+    newAmountMap.set(guestNumber, newCount);
+    setSelectedAmount(newAmountMap)
+
+    const newRoom: NewBookingRoom = {
+      roomCategory: roomCategoryId,
+      guestNumber: guestNumber,
+      amount: newCount,
+      price: price
+    };
+    addNewRoom(newRoom);
   }
-  const canAddMore: boolean = availableAmount > selectedAmount;
+
+  const totalSelected = () => {
+    let sum = 0;
+    selectedAmount.forEach((v) => sum += v)
+    return sum;
+  };
+  const canAddMore: boolean = availableAmount > totalSelected();
 
   //This seems a little bit overkill, but IDK.
   const fareFilter: FareFilter | null = useMemo(
@@ -69,11 +88,11 @@ function RoomBooking({ roomCategoryId, availableAmount }: { roomCategoryId: numb
   if (hasPrices) {
     const tableRows = roomPriceList?.map((el) => {
       return (
-        <TableRow>
+        <TableRow key={el.guestNumber}>
           <TableCell>{el.guestNumber}</TableCell>
           <TableCell>{el.price / 100} €</TableCell>
           <TableCell>
-            <NumberSelector updateCount={(count) => onSelectedAmountUpdate(el.guestNumber, count)} addEnabled={canAddMore}></NumberSelector>
+            <NumberSelector updateCount={(count) => onSelectedAmountUpdate(el.guestNumber, count, el.price)} addEnabled={canAddMore}></NumberSelector>
           </TableCell>
         </TableRow>
       );
@@ -116,7 +135,7 @@ function RoomBooking({ roomCategoryId, availableAmount }: { roomCategoryId: numb
         {hasPrices ? priceTable : <Typography variant={"largeText"}>No Prices available</Typography>}
         <div>
         </div>
-        <p>Selected: {selectedAmount}</p>
+        <p>Selected: {totalSelected()}</p>
       </CardContent>
     </Card>
   );
