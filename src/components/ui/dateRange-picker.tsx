@@ -18,12 +18,12 @@ import { Typography } from "./typography"
 export type UpdateRangeFunction = (newRange: DateRange) => void;
 
 export function DatePickerWithRange({
-  className, updateDateRange
-}: { className?: React.HTMLAttributes<HTMLDivElement> | undefined, updateDateRange: UpdateRangeFunction | undefined }) {
+  className, updateDateRange, startDate, endDate
+}: { className?: React.HTMLAttributes<HTMLDivElement> | undefined, updateDateRange: UpdateRangeFunction | undefined , startDate?: Date, endDate?: Date}) {
   // Date Range State.
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
-    from: undefined,
-    to: undefined,
+    from: startDate,
+    to: endDate,
   });
 
   //TODOME: Si el día es mods.outside, navegar al mes correspondiente.

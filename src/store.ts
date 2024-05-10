@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { SearchFilter } from './model/SearchFilter'
-import { NewBooking, NewBookingRoom } from './model/Bookings'
+import { NewBooking, NewBookingCustomerDetails, NewBookingRoom } from './model/Bookings'
 
 interface AppState {
     searchFilter: SearchFilter
@@ -9,6 +9,7 @@ interface AppState {
     setNewBooking: (newBooking: NewBooking) => void
     resetBookingState: (arrival: Date, departure: Date) => void
     addNewBookingRoom: (newRoom: NewBookingRoom) => void
+    setBookingCustomer: (newCustomer: NewBookingCustomerDetails) => void
 }
 
 const defaultSearchFilter: SearchFilter = {
@@ -68,6 +69,18 @@ function addNewBookingRoomToCurrentState(newRoom: NewBookingRoom, currentState: 
     return newState;
 }
 
+function setBookingCustomer(newCustomer: NewBookingCustomerDetails, currentState: NewBooking | null) {
+    if(currentState == null) {
+        return currentState;
+    }
+
+    const newState: NewBooking = {
+        ...currentState,
+        customerDetails: newCustomer
+    };
+    return newState;
+}
+
 export const useAppStore = create<AppState>()((set) => ({
     searchFilter: defaultSearchFilter,
     setSearchFilter: (newFilter) => set(() => ({ searchFilter: newFilter })),
@@ -76,5 +89,7 @@ export const useAppStore = create<AppState>()((set) => ({
     resetBookingState: (arrival, departure) =>
         set(() => ({ newBookingData: getDefaultBookingData(arrival, departure) })),
     addNewBookingRoom: (newRoom: NewBookingRoom) =>
-        set((state) => ({ newBookingData: addNewBookingRoomToCurrentState(newRoom, state.newBookingData) }))
+        set((state) => ({ newBookingData: addNewBookingRoomToCurrentState(newRoom, state.newBookingData) })),
+    setBookingCustomer: (newCustomer: NewBookingCustomerDetails) => 
+        set((state) => ({newBookingData: setBookingCustomer(newCustomer, state.newBookingData)}))
 }))

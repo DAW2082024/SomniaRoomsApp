@@ -7,6 +7,7 @@ import ErrorPage from './error-page';
 import Homepage from './routes/home-page';
 import SearchPage from './routes/search-page';
 import BookPage from './routes/book-page';
+import SuccessPage from './routes/success-page';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/book",
         element: <BookPage />
+      },
+      {
+        path: "/success",
+        element: <SuccessPage />
       }
     ]
   },

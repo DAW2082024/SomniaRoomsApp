@@ -29,8 +29,8 @@ export function SearchFilterCard({ onSearchClick }: { onSearchClick?: funOnSearc
   useEffect(() => {
     setSearchFilter(location.state);
   }, [location]);
-  
-  
+
+
   const { toast } = useToast();
 
   // Validate and call callback on btSearch click.
@@ -69,13 +69,25 @@ export function SearchFilterCard({ onSearchClick }: { onSearchClick?: funOnSearc
     console.log("SearchFilterCard filter UPDATED");
   }
 
+  const datePickerElement = searchFilter == null ? (
+    <DatePickerWithRange
+      updateDateRange={updateDateRange}>
+    </DatePickerWithRange>
+  ) : (
+    <DatePickerWithRange
+      updateDateRange={updateDateRange}
+      startDate={searchFilter.dateRange.from}
+      endDate={searchFilter.dateRange.to}>
+    </DatePickerWithRange>
+  );
+
   return (
     <Card>
       <CardHeader className="p-0 m-0 mb-5">
         <Typography variant={"h2"} as="h1" className="mx-5 py-2">Reserva ahora</Typography>
       </CardHeader>
       <CardContent>
-        <DatePickerWithRange updateDateRange={updateDateRange}></DatePickerWithRange>
+        {datePickerElement}
         <Separator className="my-4" />
         <Button size={"lg"} onClick={btSearchClick}>
           <SearchIcon className="text-primary-foreground me-2" />
