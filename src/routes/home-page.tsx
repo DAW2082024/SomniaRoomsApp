@@ -26,7 +26,7 @@ function Homepage() {
 
   return (
     <>
-      <Typography variant={"h1"}>Hostal del Val</Typography>
+      <Typography variant={"h1"}>Somnia Rooms</Typography>
       <Separator className="my-10" />
       <SearchFilterCard onSearchClick={onBtSearchClick}/>
       <Separator className="my-10" />

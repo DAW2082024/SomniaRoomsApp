@@ -18,8 +18,11 @@ import { Typography } from "./typography"
 export type UpdateRangeFunction = (newRange: DateRange) => void;
 
 export function DatePickerWithRange({
-  className, updateDateRange, startDate, endDate
-}: { className?: React.HTMLAttributes<HTMLDivElement> | undefined, updateDateRange: UpdateRangeFunction | undefined , startDate?: Date, endDate?: Date}) {
+  className, updateDateRange, startDate, endDate, allowPast = true
+}: {
+  className?: React.HTMLAttributes<HTMLDivElement> | undefined, updateDateRange: UpdateRangeFunction | undefined,
+  startDate?: Date, endDate?: Date, allowPast?: boolean
+}) {
   // Date Range State.
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
     from: startDate,
@@ -61,6 +64,11 @@ export function DatePickerWithRange({
     beforeAndSelected = [beforeMatcher, dateMatcher];
   }
 
+  let pastMatcher: DateBefore | undefined = undefined;
+  if (!allowPast) {
+    pastMatcher = { before: new Date() };
+  }
+
   return (
     <div className={cn("grid gap-x-2 grid-cols-2 grid-rows-2", className)}>
       <Typography variant={"largeText"} as="p">Desde</Typography>
@@ -91,6 +99,7 @@ export function DatePickerWithRange({
             selected={dateRange?.from}
             onDayClick={handleDayClickFrom}
             numberOfMonths={1}
+            disabled={pastMatcher}
           />
         </PopoverContent>
       </Popover>

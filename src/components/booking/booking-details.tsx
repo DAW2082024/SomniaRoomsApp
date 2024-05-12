@@ -7,8 +7,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Button } from "../ui/button";
 
 type OnBookingClickFunction = () => void;
+type BookingDetailsModes = "Book" | "View"
 
-export function BookingDetails({ onBookingConfirm }: { onBookingConfirm?: OnBookingClickFunction }) {
+export function BookingDetails({ onBookingConfirm, mode }: { onBookingConfirm?: OnBookingClickFunction, mode: BookingDetailsModes }) {
 
   const bookingData = useAppStore((state) => state.newBookingData);
 
@@ -38,6 +39,7 @@ export function BookingDetails({ onBookingConfirm }: { onBookingConfirm?: OnBook
         <TableCell>{room.guestNumber}</TableCell>
         <TableCell>{room.amount}</TableCell>
         <TableCell>{room.price / 100} €</TableCell>
+        <TableCell>{(room.price * room.amount) / 100} €</TableCell>
       </TableRow>
     );
   })
@@ -50,7 +52,8 @@ export function BookingDetails({ onBookingConfirm }: { onBookingConfirm?: OnBook
           <TableHead>Room</TableHead>
           <TableHead>Guests</TableHead>
           <TableHead>Quantity</TableHead>
-          <TableHead>Price</TableHead>
+          <TableHead>Unit price</TableHead>
+          <TableHead>Total price</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -60,7 +63,7 @@ export function BookingDetails({ onBookingConfirm }: { onBookingConfirm?: OnBook
   );
 
 
-  const totalPrice = bookingData.rooms.reduce((acc, room) => (acc + room.price), 0);
+  const totalPrice = bookingData.rooms.reduce((acc, room) => (acc + (room.price * room.amount)), 0);
 
   return (
     <Card>
@@ -80,9 +83,12 @@ export function BookingDetails({ onBookingConfirm }: { onBookingConfirm?: OnBook
         <Separator className="my-2"></Separator>
         <Typography variant={"h3"}>Total Price</Typography>
         <Typography variant={"h3"}>{totalPrice / 100} €</Typography>
-        <Button className="my-2" onClick={onBtBookingClick}>
-          <Typography variant={"largeText"} className="text-primary-foreground">Book it!</Typography>
-        </Button>
+        {
+          mode == "Book" &&
+          <Button className="my-2" onClick={onBtBookingClick}>
+            <Typography variant={"largeText"} className="text-primary-foreground">Book it!</Typography>
+          </Button>
+        }
       </CardContent>
     </Card>
   )

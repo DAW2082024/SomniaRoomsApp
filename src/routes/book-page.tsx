@@ -113,7 +113,7 @@ function BookPage() {
         </div>
       </div>
       <Separator className="my-10" />
-      <BookingDetails></BookingDetails>
+      <BookingDetails mode="View"></BookingDetails>
       <Separator className="my-10" />
       <Button onClick={handleOnBookingSubmit} disabled={pageState == PageState.sending}>
         <Typography variant={"h3"} className="text-primary-foreground">Book it now!</Typography>

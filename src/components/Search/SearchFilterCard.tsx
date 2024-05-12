@@ -71,11 +71,13 @@ export function SearchFilterCard({ onSearchClick }: { onSearchClick?: funOnSearc
 
   const datePickerElement = searchFilter == null ? (
     <DatePickerWithRange
-      updateDateRange={updateDateRange}>
+      updateDateRange={updateDateRange}
+      allowPast={false}>
     </DatePickerWithRange>
   ) : (
     <DatePickerWithRange
       updateDateRange={updateDateRange}
+      allowPast={false}
       startDate={searchFilter.dateRange.from}
       endDate={searchFilter.dateRange.to}>
     </DatePickerWithRange>

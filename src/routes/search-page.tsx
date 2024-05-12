@@ -85,7 +85,7 @@ function SearchPage() {
         {hasRooms ? roomList : (isSearched && noRoomsAvailable)}
       </div>
       <Separator className="my-10" />
-      <BookingDetails onBookingConfirm={onBookingContinue}></BookingDetails>
+      <BookingDetails onBookingConfirm={onBookingContinue} mode={"Book"}></BookingDetails>
       <Separator className="my-10" />
       <BackendConnectionStatus isLoading={isLoading} isError={isError} />
     </div>
