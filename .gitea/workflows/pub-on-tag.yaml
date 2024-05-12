@@ -38,7 +38,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{vars.REGISTRY_INSTANCE}}/daniel-garmig/somniaroomsapp:devbuild
+          tags: ${{vars.REGISTRY_INSTANCE}}/somnia/somniaroomsapp:devbuild
           target: final-prod
           platforms: linux/amd64,linux/arm64
           secrets: | 
