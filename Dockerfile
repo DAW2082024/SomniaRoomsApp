@@ -19,7 +19,8 @@ RUN npm ci && npm run build
 # production environment
 FROM nginx:stable-alpine as final-prod
 COPY --from=builder /app/dist /usr/share/nginx/html
-EXPOSE 80
+COPY /public /usr/share/nginx/html/public
 COPY scripts/env.sh /docker-entrypoint.d/env.sh
+EXPOSE 80
 RUN chmod +x /docker-entrypoint.d/env.sh
 CMD ["nginx", "-g", "daemon off;"]
