@@ -14,8 +14,7 @@ CMD ["npm", "run", "dev"]
 
 # Build app for production.
 FROM app-base as builder
-RUN npm ci
-RUN npm run build
+RUN npm ci && npm run build
 
 # production environment
 FROM nginx:stable-alpine as final-prod
